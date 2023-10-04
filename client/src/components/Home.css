@@ -1,0 +1,41 @@
+.landing-container {
+    font-family: Arial, sans-serif;
+    background-color: #1877f2; /* Facebook's classic blue */
+    height: 100vh; /* Full viewport height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .hero-section {
+    width: 70%;
+    text-align: center;
+    color: white;
+  }
+  
+  .hero-content h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+  }
+  
+  .hero-content p {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+  }
+  
+  .cta-button {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    background-color: white;
+    color: #1877f2; /* Facebook's classic blue */
+    border: 1px solid white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .cta-button:hover {
+    background-color: #1877f2; /* Facebook's classic blue */
+    color: white;
+  }
+  
