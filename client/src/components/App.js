@@ -8,6 +8,8 @@ import UserDetails from "./UserDetails";
 import ProductList from "./ProductList";
 import { useNavigate } from "react-router-dom";
 import ProductDetail from "./ProductDetail";
+import UserOrders from "./UserOrders";
+import OrderDetail from "./OrderDetail";
 
 
 function App() {
@@ -38,6 +40,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<UserRegister />} />
         <Route path="/user" element={<UserDetails />} />
+        <Route path="/orders" element={<UserOrders />} />
+        <Route path="/orders/:orderId" element={<OrderDetail />} />
         <Route path="/products" element={<ProductList />} />
         <Route path="/products/:product_id" element={<ProductDetail />} />
         <Route path="/login" element={<UserLogin onLogin={setUser} />} />

@@ -31,6 +31,12 @@ function NavigationBar({onLogout}) {
               </li>
 
               <li className="nav-item" style={{ marginRight: '10px' }}>
+                <Link to="/orders" className="nav-link">
+                  <FaHandPeace /> Orders
+                </Link>
+              </li>
+
+              <li className="nav-item" style={{ marginRight: '10px' }}>
                 <Link to="/login" className="nav-link">
                   <FaSignInAlt /> Sign In
                 </Link>

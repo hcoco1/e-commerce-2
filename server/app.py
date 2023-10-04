@@ -126,6 +126,20 @@ def get_product_by_id(product_id):
 
     return jsonify(product.to_dict()), 200
 
+@app.route('/orders', methods=['GET'])
+def get_orders():
+    orders = Order.query.all()
+    orders_list = [order.to_dict() for order in orders]
+    return jsonify(orders_list), 200
+
+@app.route('/orders/<int:order_id>', methods=['GET'])
+def get_order_by_id(order_id):
+    order = Order.query.get(order_id)
+    if not order:
+        return jsonify({"message": "Order does not exist!"}), 400
+
+    return jsonify(order.to_dict()), 200
+
 
 
 
