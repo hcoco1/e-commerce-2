@@ -1,16 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaSignInAlt, FaSignOutAlt, FaHandPeace } from 'react-icons/fa';
+import api from './api';
 
 
 function NavigationBar({onLogout}) {
   
 
   function handleLogout() {
-    fetch("/logout", {
-      method: "DELETE",
-      credentials: 'include',
-    }).then(() => onLogout());
+    // Use the api module to logout
+    api.logout()
+       .then(() => onLogout())
+       .catch(err => {
+           console.error("Error during logout:", err);
+       });
   }
 
 

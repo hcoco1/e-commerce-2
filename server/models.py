@@ -89,6 +89,13 @@ class Order(db.Model, SerializerMixin):
             'total_price': self.total_price,
             'status': self.status
         }
+        
+    def get_product_quantity(self, product_id):
+        # Query the association table
+        association_entry = db.session.query(order_products_association).filter_by(
+            order_id=self.id, product_id=product_id
+        ).first()
+        return association_entry.quantity if association_entry else 0
 
     def __repr__(self):
         return f"<Order(id={self.id}, user_id={self.user_id}, total_price={self.total_price}, status={self.status})>"

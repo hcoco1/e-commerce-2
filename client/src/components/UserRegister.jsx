@@ -2,6 +2,10 @@ import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+
+import api from './api';
+
 
 // Your provided styles
 const StyledForm = styled(Form)`
@@ -63,33 +67,29 @@ const SignupSchema = Yup.object().shape({
 
 
 const MyForm = () => {
-  const handleSubmit = async (values) => {
-    try {
-      const response = await fetch('http://localhost:5555/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          username: values.username,
-          email: values.email,
-          password_hash: values.password // Assuming the backend expects 'password_hash'
-        }),
-      });
+  const navigate = useNavigate();
 
-      const data = await response.json();
-
-      if (response.ok) {
-        console.log("User registered successfully:", data);
-      } else {
-        console.error("Error registering user:", data.message);
-      }
-    } catch (err) {
-      console.error("Network error:", err);
-    }
+  const handleSubmit = (values) => {
+    api.register({
+      username: values.username,
+      email: values.email,
+      password_hash: values.password // Assuming the backend expects 'password_hash'
+    })
+    .then(response => {
+      console.log("User registered successfully:", response.data);
+      navigate('/products');
+    })
+    .catch(error => {
+      console.error("Error registering user:", error.message || error);
+    });
   }
+  
+
+
+
 
   return (
+    
     <Formik
         initialValues={{
             username: '',

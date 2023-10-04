@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import styled from 'styled-components';
+import api from './api'; 
 
 // Define styled components
 const StyledForm = styled(Form)`
@@ -69,25 +70,23 @@ function UserLogin({ onLogin }) {
                 password_hash: Yup.string().required('Required')
             })}
             onSubmit={(values) => {
-                fetch("http://localhost:5555/login", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(values),
-                    credentials: 'include',
-                })
-                    .then((r) => r.json())
-                    .then((user) => {
+                api.login(values)
+                    .then(response => {
+                        const user = response.data;
                         if (user.message) {
                             alert(user.message);
                         } else {
                             console.log("Logged in as:", user);
                             onLogin(user);
-                            navigate('/user'); // Navigate to the user route
+                            navigate('/products'); // Navigate to the products route
                         }
+                    })
+                    .catch(error => {
+                        console.error("Error during login:", error.message || error);
+                        alert('Login failed. Please try again.');
                     });
             }}
+            
         >
             <StyledForm>
                 <FormDiv>

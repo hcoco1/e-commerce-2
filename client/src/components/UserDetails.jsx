@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
+
 
 // Styled components for the user details
 const UserDetailsContainer = styled.div`
@@ -34,20 +36,14 @@ function UserDetails() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        fetch('/user', {
-            method: 'GET',
+        axios.get('/user', {
             headers: {
                 'Content-Type': 'application/json'
             },
-            credentials: 'include' // to include cookies with the request
+            withCredentials: true  // to include cookies with the request
         })
         .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
+            const data = response.data;
             if (data.message) {
                 setError(data.message);
             } else {
@@ -55,9 +51,14 @@ function UserDetails() {
             }
         })
         .catch(error => {
-            setError(error.message);
+            if (error.response && error.response.data && error.response.data.message) {
+                setError(error.response.data.message);
+            } else {
+                setError(error.message);
+            }
         });
     }, []);
+    
 
     if (error) {
         return <div>Error: {error}</div>;

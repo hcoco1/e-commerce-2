@@ -1,16 +1,22 @@
 // UserOrderHistory.jsx
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import api from './api';
 
 function UserOrders() {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    // Fetch orders when component mounts
-    fetch('/orders')
-      .then(response => response.json())
-      .then(data => setOrders(data))
-      .catch(error => console.error('Error fetching orders:', error));
+    async function fetchOrders() {
+        try {
+            const response = await api.getOrders();  // Using the new api
+            setOrders(response.data);   // Access the data property from the axios response
+        } catch (error) {
+            console.error("Error fetching orders:", error);
+        }
+    }
+
+    fetchOrders();
   }, []);
 
   return (

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import api from './api';
 
 // Styled components for the user details
 const UserDetailsContainer = styled.div`
@@ -36,15 +37,20 @@ function ProductDetail() {
     const { product_id } = useParams();  // Accessing the param using useParams
 
     useEffect(() => {
-        fetch(`/products/${product_id}`)
-            .then(response => response.json())
-            .then(data => {
+        // Fetch product details using the api module
+        api.getProductById(product_id)
+            .then(response => {
+                const data = response.data;  // With axios, the data is under the 'data' property of the response object
                 if (data.message) {
                     setError(data.message);
                 } else {
                     setProduct(data);
                     setError("");
                 }
+            })
+            .catch(err => {
+                console.error("Error fetching product details:", err);
+                setError("Failed to load product details. Please try again.");
             });
     }, [product_id]);
 

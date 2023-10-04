@@ -1,6 +1,7 @@
 // OrderDetail.jsx
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import api from './api'; 
 
 const OrderDetail = () => {
     const { orderId } = useParams();
@@ -8,18 +9,22 @@ const OrderDetail = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        fetch(`/orders/${orderId}`)
-            .then(response => response.json())
-            .then(data => {
+        async function fetchOrderDetails() {
+            try {
+                const response = await api.getOrderById(orderId); 
+                const data = response.data;
+
                 if (data.message) {
                     setError(data.message);
                 } else {
                     setOrder(data);
                 }
-            })
-            .catch(err => {
+            } catch (err) {
                 setError("Error fetching the order details");
-            });
+            }
+        }
+
+        fetchOrderDetails();
     }, [orderId]);
 
     if (error) {
@@ -38,3 +43,4 @@ const OrderDetail = () => {
 };
 
 export default OrderDetail;
+

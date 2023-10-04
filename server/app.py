@@ -126,11 +126,55 @@ def get_product_by_id(product_id):
 
     return jsonify(product.to_dict()), 200
 
+
+@app.route('/orders', methods=['POST'])
+def create_order():
+    data = request.json
+
+    # Create order instance
+    order = Order(
+        user_id=data['user_id'], 
+        total_price=data['total_price'], 
+        status=data['status']
+    )
+
+    # Adding products to order
+    for item in data['products']:
+        product = Product.query.get(item['product_id'])
+        if product:  # Ensure product exists
+            order.products.append(product)
+            # Save quantity in association table. This step requires more intricate handling.
+
+    db.session.add(order)
+    db.session.commit()
+
+    return jsonify(order.to_dict()), 201
+
+
+@app.route('/orders/<int:order_id>', methods=['PUT'])
+def update_order(order_id):
+    order = Order.query.get(order_id)
+    if not order:
+        return jsonify({"message": "Order does not exist!"}), 404
+
+    data = request.json
+    order.total_price = data['total_price']
+    order.status = data['status']
+
+    # Update products and their quantities as required.
+
+    db.session.commit()
+
+    return jsonify(order.to_dict()), 200
+
+
 @app.route('/orders', methods=['GET'])
 def get_orders():
     orders = Order.query.all()
     orders_list = [order.to_dict() for order in orders]
     return jsonify(orders_list), 200
+
+
 
 @app.route('/orders/<int:order_id>', methods=['GET'])
 def get_order_by_id(order_id):
@@ -138,7 +182,23 @@ def get_order_by_id(order_id):
     if not order:
         return jsonify({"message": "Order does not exist!"}), 400
 
-    return jsonify(order.to_dict()), 200
+    order_dict = order.to_dict()
+    
+    # Adding user details
+    order_dict["user"] = order.user.to_dict()
+
+    # Adding products in the order
+    order_dict["products"] = []
+    for product in order.products:
+        product_dict = product.to_dict()
+        # Here, you need a way to get the quantity of each product in the order.
+        # This part requires some direct SQL or an additional method on the Order model.
+        # For this example, let's assume a method get_product_quantity is defined on Order model.
+        product_dict["quantity"] = order.get_product_quantity(product.id)
+        order_dict["products"].append(product_dict)
+
+    return jsonify(order_dict), 200
+
 
 
 
