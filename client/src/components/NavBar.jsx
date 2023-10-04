@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaHome, FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
+import { FaHome, FaSignInAlt, FaSignOutAlt, FaHandPeace } from 'react-icons/fa';
 
 
 function NavigationBar({onLogout}) {
@@ -22,6 +22,11 @@ function NavigationBar({onLogout}) {
               <li className="nav-item" style={{ marginRight: '10px' }}>
                 <Link to="/" className="nav-link">
                   <FaHome /> Home
+                </Link>
+              </li>
+              <li className="nav-item" style={{ marginRight: '10px' }}>
+                <Link to="/products" className="nav-link">
+                  <FaHandPeace /> Produtcs
                 </Link>
               </li>
 

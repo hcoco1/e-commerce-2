@@ -1,62 +1,110 @@
-import React, { useState } from "react";
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import styled from 'styled-components';
+
+// Define styled components
+const StyledForm = styled(Form)`
+    width: 300px;
+    margin: 50px auto;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+`;
+
+const FormDiv = styled.div`
+    margin-bottom: 15px;
+`;
+
+const StyledLabel = styled.label`
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+`;
+
+const StyledInput = styled(Field)`
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+    &:focus {
+        border-color: #1877f2;
+        outline: none;
+    }
+`;
+
+const StyledButton = styled.button`
+    background-color: #1877f2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    &:hover {
+        background-color: #166fea;
+    }
+`;
+
+const StyledErrorMessage = styled(ErrorMessage)`
+    color: red;
+    font-size: 12px;
+    margin-bottom: 5px;
+`;
 
 function UserLogin({ onLogin }) {
-  const [email, setEmail] = useState("");
-  const [password_hash, setPassword_hash] = useState("");
-  const navigate = useNavigate();
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    fetch("http://localhost:5555/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: email,
-        password_hash: password_hash,
-      }),
-      credentials: 'include',
-    })
-      .then((r) => r.json())
-      .then((user) => {
-        if (user.message) {
-          alert(user.message);
-        } else {
-          console.log("Logged in as:", user);
-          onLogin(user);
-          navigate('/user'); // Navigate to the user route
-        }
-      });
-  }
+    const navigate = useNavigate();
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div>
-                <label htmlFor="email">Email: </label>
-                <input 
-                    id="email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                />
-            </div>
+        <Formik
+            initialValues={{
+                email: '',
+                password_hash: ''
+            }}
+            validationSchema={Yup.object({
+                email: Yup.string().email('Invalid email').required('Required'),
+                password_hash: Yup.string().required('Required')
+            })}
+            onSubmit={(values) => {
+                fetch("http://localhost:5555/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(values),
+                    credentials: 'include',
+                })
+                    .then((r) => r.json())
+                    .then((user) => {
+                        if (user.message) {
+                            alert(user.message);
+                        } else {
+                            console.log("Logged in as:", user);
+                            onLogin(user);
+                            navigate('/user'); // Navigate to the user route
+                        }
+                    });
+            }}
+        >
+            <StyledForm>
+                <FormDiv>
+                    <StyledLabel htmlFor="email">Email</StyledLabel>
+                    <StyledInput name="email" type="email" />
+                    <StyledErrorMessage name="email" component="div" />
+                </FormDiv>
 
-            <div>
-                <label htmlFor="password_hash">Password: </label>
-                <input
-                    id="password_hash"
-                    type="password"
-                    value={password_hash}
-                    onChange={(e) => setPassword_hash(e.target.value)}
-                    required
-                />
-            </div>
+                <FormDiv>
+                    <StyledLabel htmlFor="password_hash">Password</StyledLabel>
+                    <StyledInput name="password_hash" type="password" />
+                    <StyledErrorMessage name="password_hash" component="div" />
+                </FormDiv>
 
-            <button type="submit">Login</button>
-        </form>
+                <StyledButton type="submit">Login</StyledButton>
+            </StyledForm>
+        </Formik>
     );
 }
 

@@ -5,7 +5,10 @@ import Home from "./Home";
 import UserRegister from "./UserRegister";
 import UserLogin from "./UserLogin";
 import UserDetails from "./UserDetails";
+import ProductList from "./ProductList";
 import { useNavigate } from "react-router-dom";
+import ProductDetail from "./ProductDetail";
+
 
 function App() {
   const [user, setUser] = useState(null);
@@ -35,6 +38,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<UserRegister />} />
         <Route path="/user" element={<UserDetails />} />
+        <Route path="/products" element={<ProductList />} />
+        <Route path="/products/:product_id" element={<ProductDetail />} />
         <Route path="/login" element={<UserLogin onLogin={setUser} />} />
       </Routes>
     </div>

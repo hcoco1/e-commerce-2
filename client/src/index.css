@@ -105,3 +105,30 @@
   vertical-align: middle;
   size: 30em
 }
+
+.product-listing {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 20px;
+  padding: 20px;
+}
+
+.product-item {
+  border: 1px solid #ddd;
+  padding: 10px;
+  width: calc(25% - 20px);  /* Example for 3 items per row with some gap. Adjust as needed. */
+  margin: 10px 0;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.product-item h2 {
+  color: #365899;  /* Facebook blue */
+  font-size: 1.2em;
+}
+
+.product-item p {
+  color: #666;
+  margin: 5px 0;
+}

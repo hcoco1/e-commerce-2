@@ -111,6 +111,25 @@ def get_user_by_ID():
     return jsonify(user.to_dict()), 200
 
 
+@app.route('/products', methods=['GET'])
+def get_products():
+    products = Product.query.all()
+    products_list = [product.to_dict() for product in products]
+    return jsonify(products_list), 200
+
+
+@app.route('/products/<int:product_id>', methods=['GET'])
+def get_product_by_id(product_id):
+    product = Product.query.get(product_id)
+    if not product:
+        return jsonify({"message": "Product does not exist!"}), 400
+
+    return jsonify(product.to_dict()), 200
+
+
+
+
+
     
     
     
