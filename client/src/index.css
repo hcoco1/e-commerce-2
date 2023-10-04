@@ -117,7 +117,7 @@
 .product-item {
   border: 1px solid #ddd;
   padding: 10px;
-  width: calc(25% - 20px);  /* Example for 3 items per row with some gap. Adjust as needed. */
+  width: calc(33% - 20px);  /* Example for 3 items per row with some gap. Adjust as needed. */
   margin: 10px 0;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import UserContext from './UserContext';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import api from './api';
@@ -35,6 +36,7 @@ function ProductDetail() {
     const [product, setProduct] = useState({});
     const [error, setError] = useState("");
     const { product_id } = useParams();  // Accessing the param using useParams
+    const { setCart } = useContext(UserContext);
 
     useEffect(() => {
         // Fetch product details using the api module
@@ -58,6 +60,14 @@ function ProductDetail() {
         return <div>{error}</div>;
     }
 
+    const addToCart = (productId, quantity) => {
+        setCart(prev => {
+            const updatedCart = { ...prev, [productId]: quantity };
+            console.log("Updated Cart:", updatedCart);
+            return updatedCart;
+        });
+    };
+
     return (
         <UserDetailsContainer>
             <UserTitle>Description</UserTitle>
@@ -65,7 +75,18 @@ function ProductDetail() {
             <UserInfo><UserLabel>Stock:</UserLabel> {product.price}</UserInfo>
             <UserInfo><UserLabel>Price:</UserLabel> {product.stock}</UserInfo>
             {/* Add any other product attributes you want to display here */}
-            </UserDetailsContainer>
+            <input 
+                type="number" 
+                min="0" 
+                max={product.stock} 
+                defaultValue="0"
+            />
+            <button onClick={() => {
+                addToCart(product.id, parseInt(document.querySelector(`input[type="number"]`).value));
+            }}>
+                Add to Cart
+            </button>
+        </UserDetailsContainer>
     );
 }
 

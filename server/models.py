@@ -77,7 +77,7 @@ class Order(db.Model, SerializerMixin):
     status = Column(String, default="Pending")
 
     user = relationship("User", back_populates="orders")
-    products = relationship(
+    products = db.relationship(
         "Product", secondary=order_products_association, back_populates="orders"
     )
 

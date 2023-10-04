@@ -52,6 +52,12 @@ function NavigationBar({onLogout}) {
               </li>
 
               <li className="nav-item">
+                <Link to="/cart" className="nav-link">
+                  <FaSignOutAlt /> Cart
+                </Link>
+              </li>
+
+              <li className="nav-item">
                 <Link to="/user" className="nav-link">
                   <FaSignOutAlt /> Profile
                 </Link>
