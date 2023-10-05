@@ -97,7 +97,7 @@
 /* Email Styles */
 .user-card p {
   font-size: 14px;
-  color: #777;
+  color: #6e6363;
   margin-bottom: 10px;
 }
 
@@ -116,8 +116,8 @@
 
 .product-item {
   border: 1px solid #ddd;
-  padding: 10px;
-  width: calc(33% - 20px);  /* Example for 3 items per row with some gap. Adjust as needed. */
+  padding: 20px;
+  width: calc(20% - 20px);  /* Example for 3 items per row with some gap. Adjust as needed. */
   margin: 10px 0;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
