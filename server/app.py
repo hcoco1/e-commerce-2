@@ -2,19 +2,17 @@
 import sys
 print(sys.path)
 
-from flask import Flask, request, jsonify, make_response
-from flask_restful import Resource
+from flask import request, jsonify
+
 from flask_cors import cross_origin
 from flask import session
 import os
 from dotenv import load_dotenv
 from datetime import timedelta
-from models import order_products_association
-
 
 # Local imports
-from config import app, db, api
-from models import User, Product, Order
+from config import app, db
+from models import User, Product, Order, order_products_association
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
