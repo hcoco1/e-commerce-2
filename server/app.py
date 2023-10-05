@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+import sys
+print(sys.path)
+
 from flask import Flask, request, jsonify, make_response
 from flask_restful import Resource
 from flask_cors import cross_origin
