@@ -6,8 +6,6 @@ from dotenv import load_dotenv
 from datetime import timedelta
 from config import app, db
 from models import User, Product, Order, order_products_association
-import logging
-logging.basicConfig(level=logging.DEBUG)
 
 
 load_dotenv()
@@ -65,7 +63,7 @@ def login_user():
 
     # Set the user_id in the session
     session['user_id'] = user.id
-    logging.debug(f"User ID {user.id} set in session")
+   
 
     # Return a success message
     return jsonify(user.to_dict()), 200
