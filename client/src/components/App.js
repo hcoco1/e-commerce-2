@@ -29,19 +29,19 @@ function App() {
   }
 
   return (
-  
+
     <div className="App">
       <NavBar onLogout={LogoutFunction} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<UserRegister />} />
-        <Route path="/login" element={<UserLogin onLogin={setUser}  />} />
+        <Route path="/login" element={<UserLogin onLogin={setUser} />} />
 
-        {/* Protected Routes */}
-        <Route path="/user" element={<ProtectedRoute fallback="/login"> 
+        
+        <Route path="/user" element={<ProtectedRoute fallback="/login">
           <UserDetails />
         </ProtectedRoute>} />
-        
+
         <Route path="/orders" element={<ProtectedRoute fallback="/login">
           <UserOrders />
         </ProtectedRoute>} />
@@ -49,7 +49,7 @@ function App() {
         <Route path="/orders/:orderId" element={<ProtectedRoute fallback="/login">
           <OrderDetail />
         </ProtectedRoute>} />
-        {/* End of Protected Routes */}
+       
 
         <Route path="/products" element={<ProductList />} />
         <Route path="/products/:product_id" element={<ProductDetail />} />
@@ -58,7 +58,7 @@ function App() {
         <Route path="*" element={<NoMatch />} />
       </Routes>
     </div>
-  
+
   );
 }
 

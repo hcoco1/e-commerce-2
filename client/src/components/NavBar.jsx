@@ -4,6 +4,7 @@ import { FaHome, FaSignInAlt, FaSignOutAlt, FaListOl, FaIcons, FaShoppingCart } 
 import api from './api';
 import styled from 'styled-components'
 import UserContext from './UserContext';
+import './NavBar.css'
 
 const Button = styled.button`
   background: transparent;
