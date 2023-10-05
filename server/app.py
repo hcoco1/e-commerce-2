@@ -14,12 +14,7 @@ app.secret_key = os.getenv("SECRET_KEY")
 app.permanent_session_lifetime = timedelta(days=7)
 
 
-app = Flask(
-__name__,
-static_url_path='',
-static_folder='../client/build',
-template_folder='../client/build'
-)
+
 
 
 
@@ -226,14 +221,6 @@ def get_order_by_id(order_id):
     return jsonify(order_dict), 200
 
 
-
-
-
-
-
-
-    
-    
 
 
 
