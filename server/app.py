@@ -6,6 +6,8 @@ from flask import session
 import os
 from dotenv import load_dotenv
 from datetime import timedelta
+from models import order_products_association
+
 
 # Local imports
 from config import app, db, api
@@ -134,21 +136,41 @@ def create_order():
     # Create order instance
     order = Order(
         user_id=data['user_id'], 
-        total_price=data['total_price'], 
+        total_price=data.get('total_price', 0.0),
         status=data['status']
     )
+    db.session.add(order)
+    db.session.commit()  # Commit the order to get an id
 
     # Adding products to order
     for item in data['products']:
         product = Product.query.get(item['product_id'])
         if product:  # Ensure product exists
-            order.products.append(product)
-            # Save quantity in association table. This step requires more intricate handling.
+            # Check if product is already associated with the order
+            if product in order.products:
+                # Update quantity if product is already associated
+                order_product_association = db.session.query(order_products_association).filter_by(
+                    order_id=order.id, product_id=product.id
+                ).first()
+                order_product_association.quantity = item['quantity']
+            else:
+                # Associate product with order and set quantity
+                order.products.append(product)
+                order_product_association = order_products_association.insert().values(
+                    order_id=order.id,
+                    product_id=product.id,
+                    quantity=item['quantity']
+                )
+                db.session.execute(order_product_association)
 
-    db.session.add(order)
     db.session.commit()
 
     return jsonify(order.to_dict()), 201
+
+
+
+
+
 
 
 @app.route('/orders/<int:order_id>', methods=['PUT'])

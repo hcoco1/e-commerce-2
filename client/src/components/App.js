@@ -12,6 +12,7 @@ import UserOrders from "./UserOrders";
 import OrderDetail from "./OrderDetail";
 import ShoppingCart from "./ShoppingCart";
 import Checkout from "./Checkout";
+import NoMatch from "./NoMatch";
 
 
 import UserContext from './UserContext';
@@ -43,6 +44,7 @@ function App() {
           <Route path="/login" element={<UserLogin onLogin={setUser} />} />
           <Route path="/cart" element={<ShoppingCart />} />
           <Route path="/checkout" element={<Checkout />} />
+          <Route path="*" element={<NoMatch />} />
         </Routes>
       </div>
   
