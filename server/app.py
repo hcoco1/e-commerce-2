@@ -15,10 +15,6 @@ app.permanent_session_lifetime = timedelta(days=7)
 
 
 
-
-
-
-
 @app.route('/')
 @cross_origin()
 def index():
@@ -51,7 +47,7 @@ def register_user():
     return jsonify(user_dict), 201
 
 @app.route('/login', methods=['POST'])
-@cross_origin(origin="http://localhost:3000", supports_credentials=True)
+@cross_origin() #@cross_origin(origin="http://localhost:3000", supports_credentials=True)
 def login_user():
     # Get the user details from the request
     user_details = request.json
