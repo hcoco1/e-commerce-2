@@ -238,6 +238,6 @@ def get_order_by_id(order_id):
 
 
 if __name__ == '__main__':
-    app.run(port=5555, debug=True)
+    app.run(port=5555, debug=False)
 
 
