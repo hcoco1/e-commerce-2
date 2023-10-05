@@ -1,16 +1,9 @@
 #!/usr/bin/env python3
-import sys
-print(sys.path)
-
-from flask import request, jsonify
-
+from flask import request, jsonify, session
 from flask_cors import cross_origin
-from flask import session
 import os
 from dotenv import load_dotenv
 from datetime import timedelta
-
-# Local imports
 from config import app, db
 from models import User, Product, Order, order_products_association
 import logging
