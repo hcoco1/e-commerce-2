@@ -137,12 +137,13 @@ def create_order():
     order = Order(
         user_id=data['user_id'], 
         total_price=data.get('total_price', 0.0),
-        status=data['status']
+        status = data.get('status', 'Pending')
+
     )
     db.session.add(order)
     db.session.commit()  # Commit the order to get an id
 
-    # Adding products to order
+# Adding products to order
     for item in data['products']:
         product = Product.query.get(item['product_id'])
         if product:  # Ensure product exists
@@ -155,15 +156,15 @@ def create_order():
                 order_product_association.quantity = item['quantity']
             else:
                 # Associate product with order and set quantity
-                order.products.append(product)
-                order_product_association = order_products_association.insert().values(
+                association = order_products_association.insert().values(
                     order_id=order.id,
                     product_id=product.id,
                     quantity=item['quantity']
                 )
-                db.session.execute(order_product_association)
+                db.session.execute(association)
 
-    db.session.commit()
+
+                db.session.commit()
 
     return jsonify(order.to_dict()), 201
 
