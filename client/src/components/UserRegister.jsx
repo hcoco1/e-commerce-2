@@ -77,7 +77,7 @@ const MyForm = () => {
     })
     .then(response => {
       console.log("User registered successfully:", response.data);
-      navigate('/products');
+      navigate('/login');
     })
     .catch(error => {
       console.error("Error registering user:", error.message || error);
