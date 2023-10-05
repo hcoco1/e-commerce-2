@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from flask import Flask
 from flask import request, jsonify, session
 from flask_cors import cross_origin
 import os
@@ -219,7 +220,8 @@ def get_order_by_id(order_id):
 
 
 
-    
+
+
     
     
 
@@ -229,4 +231,9 @@ if __name__ == '__main__':
     app.run(port=5555, debug=True)
 
 
-
+    app = Flask(
+    __name__,
+    static_url_path='',
+    static_folder='../client/build',
+    template_folder='../client/build'
+)
