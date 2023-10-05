@@ -29,7 +29,20 @@ db.init_app(app)
 bcrypt = Bcrypt(app)
 
 
-# Instantiate CORS
-CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}}, supports_credentials=True)
+from flask_cors import CORS
+
+# Determine the allowed origins based on the environment
+if app.config['ENV'] == 'development':
+    # Allow requests from your development frontend (http://localhost:3000)
+    allowed_origins = ['http://localhost:3000']
+else:
+    # Configure allowed origins for your production domain(s)
+    allowed_origins = ['https://phase5-app-tyia.onrender.com']
+
+# Configure CORS with the determined allowed origins
+CORS(app, resources={r"/*": {"origins": allowed_origins}}, supports_credentials=True)
+
+
+
 
 
