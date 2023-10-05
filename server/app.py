@@ -14,6 +14,16 @@ app.secret_key = os.getenv("SECRET_KEY")
 app.permanent_session_lifetime = timedelta(days=7)
 
 
+app = Flask(
+__name__,
+static_url_path='',
+static_folder='../client/build',
+template_folder='../client/build'
+)
+
+
+
+
 @app.route('/')
 @cross_origin()
 def index():
@@ -231,9 +241,3 @@ if __name__ == '__main__':
     app.run(port=5555, debug=True)
 
 
-    app = Flask(
-    __name__,
-    static_url_path='',
-    static_folder='../client/build',
-    template_folder='../client/build'
-)
