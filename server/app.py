@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from flask import Flask, render_template
+from flask import render_template
 from flask import request, jsonify, session
 from flask_cors import cross_origin
 import os
