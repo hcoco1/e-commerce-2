@@ -15,7 +15,10 @@ app.permanent_session_lifetime = timedelta(days=7)
 
 
 
-
+@app.route('/')
+@cross_origin()
+def index():
+    return '<h1>Project Server</h1>'
 
 
 @app.route('/register', methods=['POST'])
@@ -215,8 +218,7 @@ def get_order_by_id(order_id):
 
 
 
-def index(id=0):
-    return render_template("index.html")
+
 
 
 @app.route('/')
@@ -224,7 +226,8 @@ def index(id=0):
 @app.route('/productions/<int:id>/edit')
 @app.route('/productions/new')
 
-
+def index(id=0):
+    return render_template("index.html")
 
 
 if __name__ == '__main__':
