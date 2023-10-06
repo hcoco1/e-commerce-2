@@ -15,10 +15,6 @@ app.permanent_session_lifetime = timedelta(days=7)
 
 
 
-@app.route('/')
-@cross_origin()
-def index():
-    return '<h1>Project Server</h1>'
 
 
 @app.route('/register', methods=['POST'])
