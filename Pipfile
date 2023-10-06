@@ -15,6 +15,7 @@ faker = "*"
 gunicorn = "*"
 psycopg2-binary = "*"
 toml = "*"
+flask-bcrypt = "*"
 
 [requires]
 python_full_version = "3.8.13"
