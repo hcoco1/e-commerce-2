@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-from flask import render_template
-from flask import request, jsonify, session
+from flask import render_template, request, jsonify, session
 from flask_cors import cross_origin
 import os
 from dotenv import load_dotenv
@@ -8,10 +7,12 @@ from datetime import timedelta
 from config import app, db
 from models import User, Product, Order, order_products_association
 
-
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI')  # Added equal sign here
 load_dotenv()
 app.secret_key = os.getenv("SECRET_KEY")
 app.permanent_session_lifetime = timedelta(days=7)
+
+
 
 
 
