@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from flask import Flask
+from flask import Flask, render_template
 from flask import request, jsonify, session
 from flask_cors import cross_origin
 import os
@@ -15,10 +15,7 @@ app.permanent_session_lifetime = timedelta(days=7)
 
 
 
-@app.route('/')
-@cross_origin()
-def index():
-    return '<h1>Project Server</h1>'
+
 
 
 @app.route('/register', methods=['POST'])
@@ -216,6 +213,16 @@ def get_order_by_id(order_id):
 
     return jsonify(order_dict), 200
 
+
+
+def index(id=0):
+    return render_template("index.html")
+
+
+@app.route('/')
+@app.route('/productions/<int:id>')
+@app.route('/productions/<int:id>/edit')
+@app.route('/productions/new')
 
 
 
