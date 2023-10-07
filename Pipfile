@@ -17,6 +17,7 @@ psycopg2-binary = "*"
 toml = "*"
 flask-bcrypt = "*"
 werkzeug = "==2.2.2"
+honcho = "*"
 
 [requires]
 python_full_version = "3.8.13"

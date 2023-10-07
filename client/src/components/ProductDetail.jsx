@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import UserContext from './UserContext';
-import { useParams } from 'react-router-dom';
+import { useParams, NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import api from './api';
 
@@ -43,8 +43,9 @@ const Button = styled.button`
 
 
 function ProductDetail() {
+    const [showMessage, setShowMessage] = useState(false);
     const [product, setProduct] = useState({});
-    const [quantity, setQuantity] = useState(0);  
+    const [quantity, setQuantity] = useState(0);
     const [error, setError] = useState("");
     const { product_id } = useParams();
     const { setCart } = useContext(UserContext);
@@ -76,7 +77,9 @@ function ProductDetail() {
             console.log("Updated Cart:", updatedCart);
             return updatedCart;
         });
+        setShowMessage(true);
     };
+
 
     return (
         <UserDetailsContainer>
@@ -84,16 +87,22 @@ function ProductDetail() {
             <UserInfo><UserLabel>Name:</UserLabel> {product.name}</UserInfo>
             <UserInfo><UserLabel>Stock:</UserLabel> {product.price}</UserInfo>
             <UserInfo><UserLabel>Price:</UserLabel> {product.stock}</UserInfo>
-            <input 
-                type="number" 
-                min="0" 
-                max={product.stock} 
-                value={quantity}  
-                onChange={(e) => setQuantity(parseInt(e.target.value))} 
+            <input
+                type="number"
+                min="0"
+                max={product.stock}
+                value={quantity}
+                onChange={(e) => setQuantity(parseInt(e.target.value))}
             />
             <Button onClick={() => addToCart(product.id, quantity)}>
                 Add to Cart
             </Button>
+            {showMessage && (
+                <div>
+                    Product added!
+                    Go to <NavLink to="/cart">Cart</NavLink> 
+                </div>
+            )}
         </UserDetailsContainer>
     );
 }
