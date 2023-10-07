@@ -15,7 +15,9 @@ app.permanent_session_lifetime = timedelta(days=7)
 
 
 
-
+@app.route('/')
+def index():
+    return "Index for e-commerce app"
 
 
 @app.route('/register', methods=['POST'])
@@ -217,14 +219,6 @@ def get_order_by_id(order_id):
 
 
 
-
-@app.route('/')
-@app.route('/productions/<int:id>')
-@app.route('/productions/<int:id>/edit')
-@app.route('/productions/new')
-
-def index(id=0):
-    return render_template("index.html")
 
 
 if __name__ == '__main__':
