@@ -55,7 +55,7 @@ This project is licensed under the MIT License. See the LICENSE file for more de
 
 ---
 
-![how this app works](https://github.com/hcoco1/phase2app/blob/main/gif_phase_2.gif?raw=true) 
+![how this app works](https://github.com/hcoco1/e-commerce-2/blob/main/e-commerce.gif?raw=true) 
  
 ---
 
