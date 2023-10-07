@@ -20,12 +20,7 @@ app.permanent_session_lifetime = timedelta(days=7)
 
 
 
-app = Flask(
-    __name__,
-    static_url_path='',
-    static_folder='../client/build',
-    template_folder='../client/build'
-)
+
 @app.route('/')
 @app.route('/productions/<int:id>')
 @app.route('/productions/<int:id>/edit')
