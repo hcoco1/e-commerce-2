@@ -5,18 +5,7 @@
 - Discuss the basic directory structure of a full-stack Flask/React application.
 - Carry out the first steps in creating your Phase 4 project.
 
----
 
-## Introduction
-
-Fork and clone this lesson for a template for your full-stack application. Take
-a look at the directory structure before we begin (NOTE: node_modules will be
-generated in a subsequent step):
-
-```console
-$ tree -L 2
-$ # the -L argument limits the depth at which we look into the directory structure
-.
 ├── CONTRIBUTING.md
 ├── LICENSE.md
 ├── Pipfile
