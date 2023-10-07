@@ -16,7 +16,7 @@ function ProtectedRoute({ children, fallback }) {
     }, [user, navigate, fallback]);
 
     if (!user) {
-        return null; // or you can return a loading spinner or something similar
+        return null; 
     }
 
     return children;

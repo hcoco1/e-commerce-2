@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import api from './api';
 import UserContext from './UserContext';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 // Styled components for the shopping cart
 const ShoppingCartContainer = styled.div`
@@ -57,6 +58,8 @@ const CheckoutButton = styled.button`
 `;
 
 function ShoppingCart() {
+    const navigate = useNavigate();
+
     const [products, setProducts] = useState([]);
     const { user, cart, setCart } = useContext(UserContext);
 
@@ -79,14 +82,21 @@ function ShoppingCart() {
 
     const handleCheckout = async (e) => {
         e.preventDefault();
-
+    
+        if (!user) {
+            console.error("User is not logged in!");
+            navigate('/login');
+           
+            return;
+        }
+    
         const orderProducts = Object.entries(cart).map(([productId, quantity]) => ({
             product_id: parseInt(productId),
             quantity: parseInt(quantity)
         }));
-
+    
         const totalPrice = calculateTotal(); // Calculate the total price
-
+    
         try {
             await api.createOrder({
                 user_id: user.id,
@@ -98,6 +108,7 @@ function ShoppingCart() {
             console.error("Error creating order:", err);
         }
     };
+    
 
     const handleProductChange = (productId, quantity) => {
         setCart(prev => ({ ...prev, [productId]: quantity }));

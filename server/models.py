@@ -1,4 +1,5 @@
 from sqlalchemy_serializer import SerializerMixin
+from sqlalchemy.orm import validates
 from config import db, bcrypt
 from sqlalchemy.orm import relationship
 from sqlalchemy import ForeignKey, Table, Float, DateTime, String, Integer, Column
@@ -24,7 +25,13 @@ class User(db.Model,  SerializerMixin):
     password_hash = Column(String, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
 
-    orders = db.relationship("Order", back_populates="user")
+    orders = db.relationship("Order", back_populates="user", cascade="all, delete")
+
+    
+    @validates('email')
+    def validate_email(self, key, address):
+        assert '@' in address
+        return address
 
     def set_password(self, password):
         self.password_hash = bcrypt.generate_password_hash(password).decode('utf-8')

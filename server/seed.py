@@ -10,6 +10,8 @@ def seed_users():
         username = fake.user_name()
         email = fake.email()
         password = fake.password(length=10, special_chars=True, digits=True, upper_case=True, lower_case=True)
+        print(f"Creating user: {username} {email} {password}") 
+        
         
         user = User(
             username=username,

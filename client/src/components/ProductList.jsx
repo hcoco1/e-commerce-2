@@ -6,21 +6,25 @@ import api from './api';
 
 // Styles
 const ProductListContainer = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin: 0 auto;
-    max-width: 1200px;
-    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr; // By default it has one column for small screens
+    gap: 20px;
+    margin: 0 auto;  // Center the container (if desired)
+
+    @media (min-width: 576px) {  // Medium screen breakpoint (you can adjust as needed)
+        grid-template-columns: repeat(2, 1fr);  // Two columns for medium screens
+    }
+
+    @media (min-width: 992px) {  // Large screen breakpoint (you can adjust as needed)
+        grid-template-columns: repeat(3, 1fr);  // Three columns for large screens
+    }
 `;
 
 const ProductCard = styled.div`
     background: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin: 20px 0;
     padding: 20px;
-    width: calc(33.33% - 40px);
 
     a {
         color: #1877f2; // Facebook blue color
@@ -31,6 +35,7 @@ const ProductCard = styled.div`
         }
     }
 `;
+
 const UserInfo = styled.p`
     font-size: 16px;
     margin-bottom: 10px;
@@ -41,6 +46,7 @@ const UserLabel = styled.strong`
     color: #4b4f56;
     margin-right: 5px;
 `;
+
 
 // ProductList component
 function ProductList() {

@@ -52,7 +52,13 @@ function App() {
        
 
         <Route path="/products" element={<ProductList />} />
-        <Route path="/products/:product_id" element={<ProductDetail />} />
+
+        <Route path="/products/:product_id" element={<ProtectedRoute fallback="/login">
+          <ProductDetail />
+        </ProtectedRoute>} />
+
+
+       
         <Route path="/cart" element={<ShoppingCart />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="*" element={<NoMatch />} />

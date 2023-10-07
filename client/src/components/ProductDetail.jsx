@@ -32,17 +32,27 @@ const UserLabel = styled.strong`
     margin-right: 5px;
 `;
 
+const Button = styled.button`
+  background: transparent;
+  border-radius: 3px;
+  border: 1px solid #1877f2;
+  color: #BF4F74;
+  margin: 0 1em;
+  padding: 0.25em 1em;
+`;
+
+
 function ProductDetail() {
     const [product, setProduct] = useState({});
+    const [quantity, setQuantity] = useState(0);  
     const [error, setError] = useState("");
-    const { product_id } = useParams();  // Accessing the param using useParams
+    const { product_id } = useParams();
     const { setCart } = useContext(UserContext);
 
     useEffect(() => {
-        // Fetch product details using the api module
         api.getProductById(product_id)
             .then(response => {
-                const data = response.data;  // With axios, the data is under the 'data' property of the response object
+                const data = response.data;
                 if (data.message) {
                     setError(data.message);
                 } else {
@@ -74,22 +84,18 @@ function ProductDetail() {
             <UserInfo><UserLabel>Name:</UserLabel> {product.name}</UserInfo>
             <UserInfo><UserLabel>Stock:</UserLabel> {product.price}</UserInfo>
             <UserInfo><UserLabel>Price:</UserLabel> {product.stock}</UserInfo>
-            {/* Add any other product attributes you want to display here */}
             <input 
                 type="number" 
                 min="0" 
                 max={product.stock} 
-                defaultValue="0"
+                value={quantity}  
+                onChange={(e) => setQuantity(parseInt(e.target.value))} 
             />
-            <button onClick={() => {
-                addToCart(product.id, parseInt(document.querySelector(`input[type="number"]`).value));
-            }}>
+            <Button onClick={() => addToCart(product.id, quantity)}>
                 Add to Cart
-            </button>
+            </Button>
         </UserDetailsContainer>
     );
 }
 
 export default ProductDetail;
-
-

@@ -16,14 +16,17 @@ const Button = styled.button`
 `;
 
 function NavigationBar({ onLogout }) {
-  const { user } = useContext(UserContext);
+  const { user, logout } = useContext(UserContext);
 
   function handleLogout() {
     api.logout()
-      .then(() => onLogout())
-      .catch(err => {
-        console.error("Error during logout:", err);
-      });
+    .then(() => {
+      logout();
+      onLogout();
+    })
+    .catch(err => {
+      console.error("Error during logout:", err);
+    });
   }
 
   return (
@@ -35,16 +38,39 @@ function NavigationBar({ onLogout }) {
               <FaHome /> Home
             </Link>
           </li>
+
           <li className="nav-item" style={{ marginRight: '10px' }}>
             <Link to="/products" className="nav-link">
               <FaIcons /> Products
             </Link>
           </li>
-          <li className="nav-item" style={{ marginRight: '10px' }}>
-            <Link to="/orders" className="nav-link">
-              <FaListOl /> Orders
-            </Link>
-          </li>
+
+          {user && (
+            <>
+              <li className="nav-item" style={{ marginRight: '10px' }}>
+                <Link to="/orders" className="nav-link">
+                  <FaListOl /> Orders
+                </Link>
+              </li>
+
+              <li className="nav-item">
+                <Link to="/cart" className="nav-link">
+                  <FaShoppingCart /> Cart
+                </Link>
+              </li>
+
+              <li className="nav-item">
+                <Link to="/user" className="nav-link">
+                  <FaSignOutAlt /> Hi, {user.username}
+                </Link>
+              </li>
+
+              <li className="nav-item">
+                <Button $primary onClick={handleLogout}>Sign Out</Button>
+              </li>
+            </>
+          )}
+
           {!user && (
             <>
               <li className="nav-item" style={{ marginRight: '10px' }}>
@@ -52,33 +78,13 @@ function NavigationBar({ onLogout }) {
                   <FaSignInAlt /> Sign In
                 </Link>
               </li>
+
               <li className="nav-item">
                 <Link to="/register" className="nav-link">
                   <FaSignOutAlt /> Sign Up
                 </Link>
               </li>
             </>
-          )}
-          <li className="nav-item">
-            <Link to="/cart" className="nav-link">
-              <FaShoppingCart /> Cart
-            </Link>
-          </li>
-          <li className="nav-item">
-            {user ? (
-              <Link to="/user" className="nav-link">
-                <FaSignOutAlt /> Hi, {user.username}
-              </Link>
-            ) : (
-              <Link to="/user" className="nav-link">
-                <FaSignOutAlt /> Profile
-              </Link>
-            )}
-          </li>
-          {user && (
-            <li className="nav-item">
-              <Button $primary onClick={handleLogout}>Sign Out</Button>
-            </li>
           )}
         </ul>
       </div>
@@ -87,4 +93,5 @@ function NavigationBar({ onLogout }) {
 }
 
 export default NavigationBar;
+
 

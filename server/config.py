@@ -14,7 +14,6 @@ static_folder='../client/build',
 template_folder='../client/build'
 )
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db';
-
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SESSION_COOKIE_SECURE'] = True
 
@@ -30,7 +29,10 @@ db.init_app(app)
 bcrypt = Bcrypt(app)
 
 
-CORS(app,  supports_credentials=True)
+
+
+cors = CORS(app, resources={r"/user/*": {"origins": "*", "methods": ["GET", "PATCH", "DELETE"]}}, supports_credentials=True)
+
 
 
 

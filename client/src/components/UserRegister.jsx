@@ -1,8 +1,9 @@
 import React from 'react';
+import { useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 import api from './api';
 
@@ -57,6 +58,14 @@ const StyledErrorMessage = styled(ErrorMessage)`
     font-size: 12px;
     margin-bottom: 5px;
 `;
+const SuccessMessage = styled.p`
+    color: #1877F2; 
+    font-size: 24px;  
+    font-weight: bold;
+    text-align: center;  
+    margin-top: 20px;  
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;  
+`;
 
 // Validation schema
 const SignupSchema = Yup.object().shape({
@@ -68,17 +77,23 @@ const SignupSchema = Yup.object().shape({
 
 const MyForm = () => {
   const navigate = useNavigate();
+  const [isRegistered, setIsRegistered] = useState(false);
 
   const handleSubmit = (values) => {
     api.register({
       username: values.username,
       email: values.email,
-      password_hash: values.password // Assuming the backend expects 'password_hash'
+      password: values.password 
     })
     .then(response => {
-      console.log("User registered successfully:", response.data);
-      navigate('/login');
-    })
+        console.log("User registered successfully:", response.data);
+        setIsRegistered(true);  // set the state to true once registration is successful
+        
+        // Wait for 3 seconds (or however long you like) and then navigate to login
+        setTimeout(() => {
+          navigate('/login');
+        }, 5000);
+      })
     .catch(error => {
       console.error("Error registering user:", error.message || error);
     });
@@ -89,6 +104,9 @@ const MyForm = () => {
 
 
   return (
+    <div>
+    {/* Display success message if user is registered */}
+    {isRegistered && <SuccessMessage>User registered successfully! Redirecting to Login Form...</SuccessMessage>}
     
     <Formik
         initialValues={{
@@ -120,9 +138,14 @@ const MyForm = () => {
                 </FormDiv>
 
                 <StyledButton type="submit">Register</StyledButton>
+                <div style={{ marginTop: '20px', textAlign: 'center' }}>
+                Have an account already? <Link to="/login">Sign In</Link>
+    </div>
+                
             </StyledForm>
         )}
     </Formik>
+     </div>
 );
 };
 

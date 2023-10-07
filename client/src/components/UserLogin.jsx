@@ -1,9 +1,10 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import styled from 'styled-components';
-import api from './api'; 
+import api from './api';
 
 // Define styled components
 const StyledForm = styled(Form)`
@@ -55,62 +56,100 @@ const StyledErrorMessage = styled(ErrorMessage)`
     font-size: 12px;
     margin-bottom: 5px;
 `;
+const StyledMessage = styled.p`
+    color: #1877F2;  // Facebook blue color for success
+    font-size: 24px;  
+    font-weight: bold;
+    text-align: center;  
+    margin-top: 20px;  
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;  
+`;
+
+const StyledErrorMessageStyle = styled(StyledMessage)`
+    color: #e74c3c;  // A red color for errors
+`;
 
 
 
 function UserLogin({ onLogin }) {
+    const [loginMessage, setLoginMessage] = useState('');
     const navigate = useNavigate();
+    const location = useLocation();
 
-
-
+    const messageFromState = location.state?.message || '';
+    React.useEffect(() => {
+        if (messageFromState) {
+            setLoginMessage(messageFromState);
+        }
+    }, [messageFromState]);
     
-
     return (
+        <div>
+       
+
+        {loginMessage && 
+          (loginMessage.includes('failed') 
+            ? <StyledErrorMessageStyle>{loginMessage}</StyledErrorMessageStyle> 
+            : <StyledMessage>{loginMessage}</StyledMessage>
+          )
+        }
         <Formik
             initialValues={{
                 email: '',
-                password_hash: ''
+                password: '' 
             }}
             validationSchema={Yup.object({
                 email: Yup.string().email('Invalid email').required('Required'),
-                password_hash: Yup.string().required('Required')
+                password: Yup.string().required('Required')  
             })}
             onSubmit={(values) => {
                 api.login(values)
                     .then(response => {
                         const user = response.data;
                         if (user.message) {
-                            alert(user.message);
+                            setLoginMessage(user.message);  // Set the user message if present
                         } else {
                             console.log("Logged in as:", user);
                             onLogin(user);
-                            navigate('/products'); // Navigate to the products route
+                            setLoginMessage('Login successful! Redirecting to products page...');
+                            setTimeout(() => {
+                                navigate('/products');
+                            }, 3000);
                         }
                     })
                     .catch(error => {
                         console.error("Error during login:", error.message || error);
-                        alert('Login failed. Please try again.');
+                        setLoginMessage('Login failed. Please try again.');
                     });
             }}
-            
         >
-            <StyledForm>
-                <FormDiv>
-                    <StyledLabel htmlFor="email">Email</StyledLabel>
-                    <StyledInput name="email" type="email" />
-                    <StyledErrorMessage name="email" component="div" />
-                </FormDiv>
+<StyledForm>
+    <FormDiv>
+        <StyledLabel htmlFor="email">Email</StyledLabel>
+        <StyledInput name="email" type="email" />
+        <StyledErrorMessage name="email" component="div" />
+    </FormDiv>
 
-                <FormDiv>
-                    <StyledLabel htmlFor="password_hash">Password</StyledLabel>
-                    <StyledInput name="password_hash" type="password" />
-                    <StyledErrorMessage name="password_hash" component="div" />
-                </FormDiv>
+    <FormDiv>
+        <StyledLabel htmlFor="password">Password</StyledLabel>  
+        <StyledInput name="password" type="password" />  
+        <StyledErrorMessage name="password" component="div" />  
+    </FormDiv>
 
-                <StyledButton type="submit">Login</StyledButton>
-            </StyledForm>
+    <StyledButton type="submit">Login</StyledButton>
+
+    <div style={{ marginTop: '20px', textAlign: 'center' }}>
+        Don't have an account yet? <Link to="/register">Sign Up</Link>
+    </div>
+</StyledForm>
+
         </Formik>
+        </div>
     );
 }
 
 export default UserLogin;
+
+
+
+

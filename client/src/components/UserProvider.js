@@ -25,12 +25,19 @@ const UserProvider = ({ children }) => {
     });
   }, []);
 
+  const logout = () => {
+    setUser(null); // Clear the user state
+    setCart({});   // Optionally, clear the cart as well if needed
+    // You can also add any other cleanup logic here if needed
+  };
+
   return (
-    <UserContext.Provider value={{ user, setUser, cart, setCart }}>
+    <UserContext.Provider value={{ user, setUser, logout, cart, setCart }}>
         {children}
     </UserContext.Provider>
   );
 };
 
-export default UserProvider
+export default UserProvider;
+
 

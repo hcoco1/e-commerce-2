@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
+import UserContext from './UserContext';
 
 
 // Styled components for the user details
@@ -30,10 +32,40 @@ const UserLabel = styled.strong`
     color: #4b4f56;
     margin-right: 5px;
 `;
+const Button = styled.button`
+  background: transparent;
+  border-radius: 3px;
+  border: px solid #BF4F74;
+  color: #BF4F74;
+  margin: 0 1em;
+  padding: 0.25em 1em;
+`;
+const StyledMessage = styled.p`
+    color: #1877F2;  // Facebook blue color for success
+    font-size: 16px;  
+    font-weight: bold;
+    text-align: center;  
+    margin-top: 20px;  
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;  
+`;
+
+const StyledErrorMessageStyle = styled(StyledMessage)`
+    color: #e74c3c;  // A red color for errors
+`;
+
+
+
+
+
 
 function UserDetails() {
+    const [operationMessage, setOperationMessage] = useState('');
+
+    const { user, logout } = React.useContext(UserContext);
+    const navigate = useNavigate();
     const [userData, setUserData] = useState(null);
     const [error, setError] = useState(null);
+    const [isEditing, setIsEditing] = useState(false); // State to toggle editing mode
 
     useEffect(() => {
         axios.get('/user', {
@@ -42,23 +74,61 @@ function UserDetails() {
             },
             withCredentials: true  // to include cookies with the request
         })
-        .then(response => {
-            const data = response.data;
-            if (data.message) {
-                setError(data.message);
-            } else {
-                setUserData(data);
-            }
-        })
-        .catch(error => {
-            if (error.response && error.response.data && error.response.data.message) {
-                setError(error.response.data.message);
-            } else {
-                setError(error.message);
-            }
-        });
+            .then(response => {
+                const data = response.data;
+                if (data.message) {
+                    setError(data.message);
+                } else {
+                    setUserData(data);
+                }
+            })
+            .catch(error => {
+                if (error.response && error.response.data && error.response.data.message) {
+                    setError(error.response.data.message);
+                } else {
+                    setError(error.message);
+                }
+            });
     }, []);
-    
+
+    const handleUpdate = () => {
+        axios.patch(`/user/${userData.id}`, userData, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        })
+            .then(response => {
+                setUserData(response.data);
+                setIsEditing(false);
+                setOperationMessage('User updated successfully!');
+            })
+            .catch(error => {
+                setOperationMessage('Error updating user.');
+                // You can also handle other error-related tasks if needed
+            });
+
+    };
+
+    const handleDelete = () => {
+        axios.delete(`/user/${userData.id}`, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        })
+            .then(() => {
+                setOperationMessage('User deleted successfully!');
+                logout();
+                navigate('/login', { state: { message: 'User deleted successfully!' } });
+            })
+            .catch(error => {
+                setOperationMessage('Error deleting user.');
+                // You can also handle other error-related tasks if needed
+            });
+
+    };
+
 
     if (error) {
         return <div>Error: {error}</div>;
@@ -70,12 +140,30 @@ function UserDetails() {
 
     return (
         <UserDetailsContainer>
+            {operationMessage &&
+                (operationMessage.includes('Error')
+                    ? <StyledErrorMessageStyle>{operationMessage}</StyledErrorMessageStyle>
+                    : <StyledMessage>{operationMessage}</StyledMessage>
+                )
+            }
             <UserTitle>Profile</UserTitle>
-            <UserInfo><UserLabel>Username:</UserLabel> {userData.username}</UserInfo>
-            <UserInfo><UserLabel>Email:</UserLabel> {userData.email}</UserInfo>
-            {/* You can add other user properties if needed */}
+            {isEditing ? (
+                <>
+                    <input value={userData.username} onChange={(e) => setUserData({ ...userData, username: e.target.value })} />
+                    <input value={userData.email} onChange={(e) => setUserData({ ...userData, email: e.target.value })} />
+                    <button onClick={handleUpdate}>Save</button>
+                </>
+            ) : (
+                <>
+                    <UserInfo><UserLabel>Username:</UserLabel> {userData.username}</UserInfo>
+                    <UserInfo><UserLabel>Email:</UserLabel> {userData.email}</UserInfo>
+                    <Button onClick={() => setIsEditing(true)}>Edit</Button>
+                    <Button $primary onClick={handleDelete}>Delete</Button>
+                </>
+            )}
         </UserDetailsContainer>
     );
 }
 
 export default UserDetails;
+

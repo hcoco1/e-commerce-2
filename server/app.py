@@ -7,43 +7,49 @@ from datetime import timedelta
 from config import app, db
 from models import User, Product, Order, order_products_association
 
+
+
+
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI')  # Added equal sign here
 load_dotenv()
 app.secret_key = os.getenv("SECRET_KEY")
 app.permanent_session_lifetime = timedelta(days=7)
 
-
-
+# INDEX ROUTE
 
 @app.route('/')
+@cross_origin()
 def index():
-    return "Index for e-commerce app"
+    return '<h1>Project Server: Index for e-commerce app</h1>'
 
+# SIGNUP ROUTE
 
 @app.route('/register', methods=['POST'])
 @cross_origin()
 def register_user():
-    # Get the user details from the request
     user_details = request.json
+    print(user_details)
 
-    # Check if the user already exists
     user = User.query.filter_by(email=user_details['email']).first()
 
-    # If the user exists, return an error message
     if user:
         return jsonify({"message": "User already exists!"}), 400
 
-    new_user = User(username=user_details['username'], email=user_details['email'], password_hash=user_details['password_hash'])
-   
+    new_user = User(username=user_details['username'], email=user_details['email'])
 
-    # Add the new user to the database
+    # Here, use 'password' from user_details to hash and set
+    new_user.set_password(user_details['password'])  
+
     db.session.add(new_user)
     db.session.commit()
 
     user_dict = new_user.to_dict()
 
-    # Return a success message
     return jsonify(user_dict), 201
+
+
+
+# LOGIN ROUTE
 
 @app.route('/login', methods=['POST'])
 @cross_origin()
@@ -58,16 +64,25 @@ def login_user():
     if not user:
         return jsonify({"message": "User does not exist!"}), 400
 
-    # If the user exists, check if the password is correct
-    if user.password_hash != user_details['password_hash']:
+    # If the user exists, check if the password is correct using the check_password method
+    if not user.check_password(user_details['password']):  # Note: We're using 'password' here, not 'password_hash'
         return jsonify({"message": "Incorrect password!"}), 400
 
     # Set the user_id in the session
     session['user_id'] = user.id
-   
 
     # Return a success message
     return jsonify(user.to_dict()), 200
+
+
+# LOGOUT ROUTE
+
+@app.route('/logout', methods=['GET'])
+def logout():
+    session.pop('user_id', None)
+    return jsonify({'message': 'Logged out successfully'}), 200
+
+# CHECK SESSION ROUTE
 
 @app.route('/check_session', methods=['GET'])
 def check_session():
@@ -80,13 +95,38 @@ def check_session():
     return jsonify({'message': '401: Not Authorized'}), 401
 
 
-@app.route('/logout', methods=['GET'])
-def logout():
-    session.pop('user_id', None)
-    return jsonify({'message': 'Logged out successfully'}), 200
+# UPDATE AND DELETE USER PROFILE ROUTE
+
+@app.route('/user/<int:user_id>', methods=['PATCH', 'DELETE'])
+@cross_origin()
+def modify_user(user_id):
+    user = User.query.get(user_id)
+    if not user:
+        return jsonify({"message": "User does not exist!"}), 404
+
+    # Handle PATCH request
+    if request.method == 'PATCH':
+        data = request.json
+        for attr in data:
+            # Optional: Add a check to ensure only certain attributes can be modified
+            if hasattr(user, attr):
+                setattr(user, attr, data.get(attr))
+        db.session.commit()
+        return jsonify(user.to_dict()), 200
+
+    # Handle DELETE request
+    elif request.method == 'DELETE':
+        db.session.delete(user)
+        db.session.commit()
+        session.clear()
+        return jsonify({"message": "User deleted successfully!"}), 200
 
 
 
+
+
+
+# USER PROFILE ROUTE
 
 @app.route('/user', methods=['GET'])
 @cross_origin()
@@ -104,6 +144,16 @@ def get_user_by_ID():
     
     # If user is found, return the user's details with a 200 OK status
     return jsonify(user.to_dict()), 200
+
+
+
+
+
+
+
+
+
+
 
 
 @app.route('/products', methods=['GET'])
