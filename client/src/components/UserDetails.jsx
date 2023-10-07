@@ -61,7 +61,7 @@ const StyledErrorMessageStyle = styled(StyledMessage)`
 function UserDetails() {
     const [operationMessage, setOperationMessage] = useState('');
 
-    const { user, logout } = React.useContext(UserContext);
+    const { logout } = React.useContext(UserContext);
     const navigate = useNavigate();
     const [userData, setUserData] = useState(null);
     const [error, setError] = useState(null);

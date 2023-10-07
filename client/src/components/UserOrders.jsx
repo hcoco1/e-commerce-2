@@ -56,7 +56,6 @@ const UserLabel = styled.strong`
 
 function UserOrders() {
   const [orders, setOrders] = useState([]);
-  const { product } = useContext(UserContext);
 
   useEffect(() => {
     async function fetchOrders() {
@@ -86,7 +85,6 @@ function UserOrders() {
                       <UserInfo><UserLabel>Order ID:</UserLabel> {order.id}</UserInfo>
                       <UserInfo><UserLabel>Product Name:</UserLabel> </UserInfo>
                       <UserInfo><UserLabel>Date:</UserLabel> {formatDate(order.created_at)}</UserInfo></StyledLink>
-
                 </OrderItem>
             ))}
         </OrderList>
