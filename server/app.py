@@ -17,10 +17,12 @@ app.permanent_session_lifetime = timedelta(days=7)
 
 # INDEX ROUTE
 
+
 @app.route('/')
 @cross_origin()
 def index():
-    return '<h1>Project Server: Index for e-commerce app</h1>'
+    return render_template('index.html')
+
 
 # SIGNUP ROUTE
 

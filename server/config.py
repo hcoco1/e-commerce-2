@@ -6,6 +6,9 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 from flask_bcrypt import Bcrypt 
 
+template_folder='../client/build'
+
+
 
 app = Flask(
 __name__,
