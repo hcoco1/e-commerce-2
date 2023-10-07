@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-from flask import render_template, request, jsonify, session
+from flask import render_template, request, jsonify, session, Flask
 from flask_cors import cross_origin
 import os
+
 from dotenv import load_dotenv
 from datetime import timedelta
 from config import app, db
@@ -10,19 +11,30 @@ from models import User, Product, Order, order_products_association
 
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI')  # Added equal sign here
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI') 
 load_dotenv()
 app.secret_key = os.getenv("SECRET_KEY")
 app.permanent_session_lifetime = timedelta(days=7)
 
-# INDEX ROUTE
 
 
+
+
+app = Flask(
+    __name__,
+    static_url_path='',
+    static_folder='../client/build',
+    template_folder='../client/build'
+)
 @app.route('/')
-@cross_origin()
-def index():
-    return render_template('index.html')
+@app.route('/productions/<int:id>')
+@app.route('/productions/<int:id>/edit')
+@app.route('/productions/new')
+def index(id=0):
+    return render_template("index.html")
 
+
+# INDEX ROUTE
 
 # SIGNUP ROUTE
 
