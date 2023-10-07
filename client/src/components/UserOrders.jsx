@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import api from './api';
 import styled from 'styled-components';
-import UserContext from './UserContext';
+
 
 const Container = styled.div`
     font-family: Arial, sans-serif;
