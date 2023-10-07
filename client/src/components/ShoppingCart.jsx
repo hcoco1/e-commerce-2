@@ -125,7 +125,7 @@ function ShoppingCart() {
         <ShoppingCartContainer>
             <CartTitle>Shopping Cart</CartTitle>
             <div>
-                
+              
                 {products.filter(product => cart[product.id]).map(product => (
                     <ProductContainer key={product.id}>
                         <ProductLabel>

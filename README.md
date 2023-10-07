@@ -48,3 +48,16 @@ We welcome contributions to E-Commerce! If you'd like to contribute, please fork
 
 License
 This project is licensed under the MIT License. See the LICENSE file for more details.
+
+
+
+<div align="center">
+
+---
+
+![how this app works](https://github.com/hcoco1/phase2app/blob/main/gif_phase_2.gif?raw=true) 
+ 
+---
+
+
+</div>
