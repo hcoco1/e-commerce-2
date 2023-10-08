@@ -104,6 +104,7 @@ function ShoppingCart() {
                 products: orderProducts
             });
             setCart({});  // Clear the cart after a successful checkout
+            navigate('/checkout');
         } catch (err) {
             console.error("Error creating order:", err);
         }
