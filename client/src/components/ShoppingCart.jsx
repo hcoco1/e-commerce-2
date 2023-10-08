@@ -61,7 +61,8 @@ function ShoppingCart() {
     const navigate = useNavigate();
 
     const [products, setProducts] = useState([]);
-    const { user, cart, setCart } = useContext(UserContext);
+    const { user, cart, setCart, setOrders } = useContext(UserContext);
+
 
     useEffect(() => {
         fetchProducts();
@@ -98,12 +99,13 @@ function ShoppingCart() {
         const totalPrice = calculateTotal(); // Calculate the total price
     
         try {
-            await api.createOrder({
+            const newOrder = await api.createOrder({
                 user_id: user.id,
                 total_price: totalPrice, // Include the total_price in the payload
                 products: orderProducts
             });
             setCart({});  // Clear the cart after a successful checkout
+            setOrders(prevOrders => [...prevOrders, newOrder]);  // Update the global orders state
             navigate('/checkout');
         } catch (err) {
             console.error("Error creating order:", err);

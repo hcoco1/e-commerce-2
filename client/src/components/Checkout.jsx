@@ -32,7 +32,7 @@ export default function Checkout() {
       <Header>Notification</Header>
       <Message>
         The checkout feature is still in progress. Thank you for your patience!
-        You can check your order clicking on <Link to="/orders">Orders</Link>
+        Your order was saved in our database and you can check it clicking on <Link to="/orders">Orders</Link>
       </Message>
     </CheckoutContainer>
   );

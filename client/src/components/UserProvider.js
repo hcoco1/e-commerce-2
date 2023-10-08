@@ -5,6 +5,8 @@ import UserContext from './UserContext';
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [cart, setCart] = useState({}); // Initialize the cart state
+  const [orders, setOrders] = useState([]);
+  const [product, setProduct] = useState([]);
 
   useEffect(() => {
     fetch("/check_session", {
@@ -32,7 +34,7 @@ const UserProvider = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, setUser, logout, cart, setCart }}>
+    <UserContext.Provider value={{ user, setUser, logout, cart, setCart, orders, setOrders, product, setProduct  }}>
         {children}
     </UserContext.Provider>
   );
