@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import api from './api';
 import styled from 'styled-components';
 import UserContext from './UserContext';
+import { useState } from 'react';
 
 
 const Container = styled.div`
@@ -56,25 +57,27 @@ const UserLabel = styled.strong`
 `;
 
 function UserOrders() {
- 
+    const [loading, setLoading] = useState(true);
     const { user, orders, setOrders } = useContext(UserContext);
 
 
-  useEffect(() => {
-    async function fetchOrders() {
-        try {
-            const response = await api.getOrders();
-            
-            // If user is logged in, filter the orders to show only those belonging to the logged-in user
-            const userOrders = user ? response.data.filter(order => order.user_id === user.id) : [];
-            setOrders(userOrders);
-        } catch (error) {
-            console.error("Error fetching orders:", error);
+    useEffect(() => {
+        async function fetchOrders() {
+            try {
+                setLoading(true); // Start loading
+                const response = await api.getOrders();
+                const userOrders = user ? response.data.filter(order => order.user_id === user.id) : [];
+                setOrders(userOrders);
+            } catch (error) {
+                console.error("Error fetching orders:", error);
+            } finally {
+                setLoading(false); // End loading
+            }
         }
-    }
-
-    fetchOrders();
-  }, [user, setOrders]); // Add setOrders to the dependency array
+    
+        fetchOrders();
+    }, [user, setOrders]);
+    
 
   const formatDate = (dateStr) => {
     const dateObj = new Date(dateStr);
@@ -84,16 +87,21 @@ function UserOrders() {
   return (
     <Container>
         <Title>Order History</Title>
-        <OrderList>
-            {orders.map(order => (
-                <OrderItem key={order.id}>
-                    <StyledLink to={`/orders/${order.id}`}>
-                      <UserInfo><UserLabel>Order ID:</UserLabel> {order.id}</UserInfo>
-                      <UserInfo><UserLabel>User ID:</UserLabel> {order.user_id}</UserInfo>
-                      <UserInfo><UserLabel>Date:</UserLabel> {formatDate(order.created_at)}</UserInfo></StyledLink>
-                </OrderItem>
-            ))}
-        </OrderList>
+        {loading ? (
+            <p>Loading orders...</p> // This can be replaced with a spinner or any other loading indicator
+        ) : (
+            <OrderList>
+                {orders.map(order => (
+                    <OrderItem key={order.id}>
+                        <StyledLink to={`/orders/${order.id}`}>
+                            <UserInfo><UserLabel>Order ID:</UserLabel> {order.id}</UserInfo>
+                            <UserInfo><UserLabel>Username:</UserLabel> {user.username}</UserInfo>
+                            <UserInfo><UserLabel>Date:</UserLabel> {formatDate(order.created_at)}</UserInfo>
+                        </StyledLink>
+                    </OrderItem>
+                ))}
+            </OrderList>
+        )}
     </Container>
 );
 }
