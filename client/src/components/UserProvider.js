@@ -1,12 +1,15 @@
 //UserProvider.js
 import React, { useState, useEffect } from 'react';
 import UserContext from './UserContext';
+import api from './api';
 
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [cart, setCart] = useState({}); // Initialize the cart state
   const [orders, setOrders] = useState([]);
   const [product, setProduct] = useState([]);
+
+
 
   useEffect(() => {
     fetch("/check_session", {
@@ -26,6 +29,23 @@ const UserProvider = ({ children }) => {
       console.error("Error fetching user session:", error);
     });
   }, []);
+
+ // Fetching and Setting the Orders Data:
+  useEffect(() => {
+      async function fetchUserOrders() {
+          try {
+              const response = await api.getOrders(); // Assuming you have an API method to get orders
+              setOrders(response.data);
+          } catch (error) {
+              console.error("Error fetching orders:", error);
+          }
+      }
+
+      fetchUserOrders();
+  }, []);
+
+
+
 
   const logout = () => {
     setUser(null); // Clear the user state

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import api from './api';
 import UserContext from './UserContext';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, NavLink } from 'react-router-dom';
 
 // Styled components for the shopping cart
 const ShoppingCartContainer = styled.div`
@@ -59,9 +59,11 @@ const CheckoutButton = styled.button`
 
 function ShoppingCart() {
     const navigate = useNavigate();
+    const [showMessage, setShowMessage] = useState(false);
 
     const [products, setProducts] = useState([]);
-    const { user, cart, setCart } = useContext(UserContext);
+    const { user, cart, setCart, setOrders } = useContext(UserContext);
+
 
     useEffect(() => {
         fetchProducts();
@@ -98,15 +100,21 @@ function ShoppingCart() {
         const totalPrice = calculateTotal(); // Calculate the total price
     
         try {
-            await api.createOrder({
+            const newOrder = await api.createOrder({
                 user_id: user.id,
                 total_price: totalPrice, // Include the total_price in the payload
                 products: orderProducts
             });
             setCart({});  // Clear the cart after a successful checkout
+        
+            // Update the global orders state
+            setOrders(prevOrders => [...prevOrders, newOrder.data]);
+            setShowMessage(true);
+            
         } catch (err) {
             console.error("Error creating order:", err);
         }
+        
     };
     
 
@@ -143,6 +151,12 @@ function ShoppingCart() {
             </div>
             <TotalPrice>Total Price: ${calculateTotal()}</TotalPrice>
             <CheckoutButton onClick={handleCheckout}>Checkout</CheckoutButton>
+            {showMessage && (
+                <div>
+                    Product added!
+                    Go to <NavLink to="/checkout">Checkout</NavLink> 
+                </div>
+            )}
         </ShoppingCartContainer>
     );
 }
