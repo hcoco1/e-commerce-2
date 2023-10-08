@@ -21,15 +21,14 @@
 
 
 
-Welcome to the E-Commerce  repository! This project is an e-commerce platform built with React for the frontend and Python for the backend.E-Commerce  is a comprehensive e-commerce platform designed to provide users with a seamless online shopping experience. The frontend is built using React, while the backend is powered by Python.
+Welcome to the E-Commerce  repository! This project is an e-commerce platform built with React for the frontend and flask for the backend.E-Commerce  is a comprehensive e-commerce platform designed to provide users with a seamless online shopping experience.  The app is fully responsive and can be used on mobile devices as well as desktops.
 
-Features
-User Authentication: Register, login, and manage user details.
-Product Management: Browse products, view product details, and add products to the cart.
-Checkout: Seamlessly proceed to checkout and place orders.
-Order Management: View and manage past orders.
-Shopping Cart: Add, remove, and view products in the shopping cart.
-Getting Started
+Features:
+* User Authentication: Register, login, and manage user details.
+* Product Management: Browse products, view product details, and add products to the cart.
+* Order Management: View and manage past orders.
+* Shopping Cart: Add, remove, and view products in the shopping cart.
+
 
 
 <div align="center">
@@ -116,7 +115,7 @@ After launching the app  using the python honcho command, users will be sent to 
 * Project fully deployed on Render
 
 
-Additionally, RES uses three RESTful routing conventions:
+Additionally, E-commerce uses four RESTful routing conventions:
 
 | Route   Name    | URL             | HTTP Verb             |
 |-----------------|-----------------|-----------------------| 
@@ -274,5 +273,45 @@ export default NavigationBar;
 
 ### Backend Setup
 
-E-Commerce  uses a Flask/SQLAlchemy API backend with a React frontend. The backend is deployed on Render. The backend is a RESTful API that uses four models (one many-to-many relationship) and has full CRUD actions for Users. 
+E-Commerce  has a posgresql database with four tables deployed on Render.
 
+```sql
+app_tbcl=> \dt
+                List of relations
+ Schema |      Name       | Type  |     Owner
+--------+-----------------+-------+---------------
+ public | alembic_version | table | app_tbcl_user
+ public | order_products  | table | app_tbcl_user
+ public | orders          | table | app_tbcl_user
+ public | products        | table | app_tbcl_user
+ public | users           | table | app_tbcl_user
+(5 rows)
+
+app_tbcl=>
+
+
+
+```
+
+ ### Db Diagram:
+---
+
+![how this app works](https://github.com/hcoco1/e-commerce-2/blob/main/db_diagram.png?raw=true) 
+ 
+---
+* A User can have multiple Orders.
+  
+* An Order can contain multiple Products, and a Product can be part of multiple Orders. This many-to-many relationship is represented by the order_products_association table.
+  
+* The Order model also has a method get_product_quantity that can be used to retrieve the quantity of a specific product in the order by querying the association table.
+
+#### **Contributions**
+Feel free to fork this project and submit your PRs. Any contributions to enhance the features or improve the tool are welcome!
+
+#### **License**
+This project is licensed under the terms of the MIT license. For more details, refer to the LICENSE file.
+
+#### **Future Enhancements**
+
+* Add a search bar to search for products by name.
+* Send an email to the user after register and placing  orders.
