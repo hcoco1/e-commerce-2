@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import api from './api';
 import styled from 'styled-components';
@@ -56,9 +56,8 @@ const UserLabel = styled.strong`
 `;
 
 function UserOrders() {
-
-  const { user, orders, setOrders } = useContext(UserContext);
-
+  const [orders, setOrders] = useState([]);
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     async function fetchOrders() {
@@ -67,14 +66,14 @@ function UserOrders() {
             
             // If user is logged in, filter the orders to show only those belonging to the logged-in user
             const userOrders = user ? response.data.filter(order => order.id === user.id) : [];
-            setOrders(userOrders);  // Update the global orders state
+            setOrders(userOrders);
         } catch (error) {
             console.error("Error fetching orders:", error);
         }
     }
 
     fetchOrders();
-}, [user, setOrders]); // Add setOrders to the dependency array
+  }, [user]); // Add user to the dependency array to refetch if the user changes
 
   const formatDate = (dateStr) => {
     const dateObj = new Date(dateStr);
