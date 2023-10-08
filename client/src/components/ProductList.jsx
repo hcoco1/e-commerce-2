@@ -46,11 +46,41 @@ const UserLabel = styled.strong`
     color: #4b4f56;
     margin-right: 5px;
 `;
+const SpinnerContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;  // Take the full viewport height
+`;
+
+const SpinnerMessage = styled.p`
+    margin-top: 20px;
+    font-size: 18px;
+    color: #1877f2;  // Facebook blue color
+`;
+const Spinner = styled.div`
+    border: 8px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top: 8px solid #1877f2;  // Facebook blue color
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin: 40px auto;  // Center the spinner
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+`;
+
+
 
 
 
 function ProductList() {
     const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);  // New state to track loading
 
     useEffect(() => {
         // Fetch products from the backend using the api module
@@ -58,11 +88,20 @@ function ProductList() {
             .then((response) => {
                 const data = response.data;
                 setProducts(data);
+                setLoading(false);  // Set loading to false once products are fetched
             })
             .catch((error) => {
                 console.error("Error fetching products:", error);
+                setLoading(false);  // Set loading to false even if there's an error
             });
     }, []);
+
+    if (loading) {
+        return (           <SpinnerContainer>
+            <Spinner />
+            <SpinnerMessage>Wating for Render.com...Loading Products</SpinnerMessage>
+        </SpinnerContainer>);
+    }
 
     return (
         <ProductListContainer>
@@ -77,6 +116,7 @@ function ProductList() {
         </ProductListContainer>
     );
 }
+
 
 export default ProductList;
 

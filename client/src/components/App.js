@@ -36,29 +36,19 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<UserRegister />} />
         <Route path="/login" element={<UserLogin onLogin={setUser} />} />
-
-        
         <Route path="/user" element={<ProtectedRoute fallback="/login">
           <UserDetails />
         </ProtectedRoute>} />
-
         <Route path="/orders" element={<ProtectedRoute fallback="/login">
           <UserOrders />
         </ProtectedRoute>} />
-
         <Route path="/orders/:orderId" element={<ProtectedRoute fallback="/login">
           <OrderDetail />
         </ProtectedRoute>} />
-       
-
         <Route path="/products" element={<ProductList />} />
-
         <Route path="/products/:product_id" element={<ProtectedRoute fallback="/login">
           <ProductDetail />
         </ProtectedRoute>} />
-
-
-       
         <Route path="/cart" element={<ShoppingCart />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="*" element={<NoMatch />} />

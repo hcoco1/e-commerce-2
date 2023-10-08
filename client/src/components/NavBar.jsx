@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { FaHome, FaSignInAlt, FaSignOutAlt, FaListOl, FaIcons, FaShoppingCart } from 'react-icons/fa';
 import api from './api';
 import styled from 'styled-components'
@@ -20,13 +20,13 @@ function NavigationBar({ onLogout }) {
 
   function handleLogout() {
     api.logout()
-    .then(() => {
-      logout();
-      onLogout();
-    })
-    .catch(err => {
-      console.error("Error during logout:", err);
-    });
+      .then(() => {
+        logout();
+        onLogout();
+      })
+      .catch(err => {
+        console.error("Error during logout:", err);
+      });
   }
 
   return (
@@ -34,35 +34,81 @@ function NavigationBar({ onLogout }) {
       <div className="container" style={{ display: 'flex', justifyContent: 'center' }}>
         <ul className="navbar-nav" style={{ flexDirection: 'row', alignItems: 'center', listStyleType: 'none' }}>
           <li className="nav-item" style={{ marginRight: '10px' }}>
-            <Link to="/" className="nav-link">
+
+            <NavLink
+              to="."
+              style={({ isActive, isPending }) => {
+                return {
+                  fontWeight: isActive ? "bold" : "",
+                  color: isPending ? "red" : "white",
+                };
+              }}
+
+            >
               <FaHome /> Home
-            </Link>
+            </NavLink>
           </li>
 
           <li className="nav-item" style={{ marginRight: '10px' }}>
-            <Link to="/products" className="nav-link">
+            <NavLink
+              to="/products"
+              style={({ isActive, isPending }) => {
+                return {
+                  fontWeight: isActive ? "bold" : "",
+                  color: isPending ? "red" : "white",
+                };
+              }}
+
+            >
               <FaIcons /> Products
-            </Link>
+            </NavLink>
           </li>
 
           {user && (
             <>
               <li className="nav-item" style={{ marginRight: '10px' }}>
-                <Link to="/orders" className="nav-link">
+                <NavLink
+                  to="/orders"
+                  style={({ isActive, isPending }) => {
+                    return {
+                      fontWeight: isActive ? "bold" : "",
+                      color: isPending ? "red" : "white",
+                    };
+                  }}
+
+                >
                   <FaListOl /> Orders
-                </Link>
+                </NavLink>
               </li>
 
               <li className="nav-item">
-                <Link to="/cart" className="nav-link">
+                <NavLink
+                  to="/cart"
+                  style={({ isActive, isPending }) => {
+                    return {
+                      fontWeight: isActive ? "bold" : "",
+                      color: isPending ? "red" : "white",
+                    };
+                  }}
+
+                >
                   <FaShoppingCart /> Cart
-                </Link>
+                </NavLink>
               </li>
 
               <li className="nav-item">
-                <Link to="/user" className="nav-link">
+                <NavLink
+                  to="/user"
+                  style={({ isActive, isPending }) => {
+                    return {
+                      fontWeight: isActive ? "bold" : "",
+                      color: isPending ? "red" : "white",
+                    };
+                  }}
+
+                >
                   <FaSignOutAlt /> Hi, {user.username}
-                </Link>
+                </NavLink>
               </li>
 
               <li className="nav-item">
@@ -74,18 +120,37 @@ function NavigationBar({ onLogout }) {
           {!user && (
             <>
               <li className="nav-item" style={{ marginRight: '10px' }}>
-                <Link to="/login" className="nav-link">
+                <NavLink
+                  to="/login"
+                  style={({ isActive, isPending }) => {
+                    return {
+                      fontWeight: isActive ? "bold" : "",
+                      color: isPending ? "red" : "white",
+                    };
+                  }}
+
+                >
                   <FaSignInAlt /> Sign In
-                </Link>
+                </NavLink>
               </li>
 
               <li className="nav-item">
-                <Link to="/register" className="nav-link">
+                <NavLink
+                  to="/register"
+                  style={({ isActive, isPending }) => {
+                    return {
+                      fontWeight: isActive ? "bold" : "",
+                      color: isPending ? "red" : "white",
+                    };
+                  }}
+
+                >
                   <FaSignOutAlt /> Sign Up
-                </Link>
+                </NavLink>
               </li>
             </>
           )}
+
         </ul>
       </div>
     </nav>
