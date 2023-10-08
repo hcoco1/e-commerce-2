@@ -48,7 +48,7 @@ const UserLabel = styled.strong`
 `;
 
 
-// ProductList component
+
 function ProductList() {
     const [products, setProducts] = useState([]);
 
