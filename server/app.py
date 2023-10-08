@@ -7,7 +7,7 @@ from datetime import timedelta
 from config import app, db
 from models import User, Product, Order, order_products_association
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI') 
+
 load_dotenv()
 app.secret_key = os.getenv("SECRET_KEY")
 app.permanent_session_lifetime = timedelta(days=7)
