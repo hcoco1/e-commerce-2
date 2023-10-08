@@ -99,7 +99,7 @@ function ProductList() {
     if (loading) {
         return (           <SpinnerContainer>
             <Spinner />
-            <SpinnerMessage>Wating for Render.com...Loading Products</SpinnerMessage>
+            <SpinnerMessage>Waiting for Render.com...Loading Products</SpinnerMessage>
         </SpinnerContainer>);
     }
 
