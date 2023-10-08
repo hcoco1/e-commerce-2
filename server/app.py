@@ -2,24 +2,15 @@
 from flask import render_template, request, jsonify, session, Flask
 from flask_cors import cross_origin
 import os
-
 from dotenv import load_dotenv
 from datetime import timedelta
 from config import app, db
 from models import User, Product, Order, order_products_association
 
-
-
-
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI') 
 load_dotenv()
 app.secret_key = os.getenv("SECRET_KEY")
 app.permanent_session_lifetime = timedelta(days=7)
-
-
-
-
-
 
 @app.route('/')
 @app.route('/productions/<int:id>')
@@ -28,8 +19,6 @@ app.permanent_session_lifetime = timedelta(days=7)
 def index(id=0):
     return render_template("index.html")
 
-
-# INDEX ROUTE
 
 # SIGNUP ROUTE
 
@@ -55,7 +44,6 @@ def register_user():
     user_dict = new_user.to_dict()
 
     return jsonify(user_dict), 201
-
 
 
 # LOGIN ROUTE
@@ -130,11 +118,6 @@ def modify_user(user_id):
         session.clear()
         return jsonify({"message": "User deleted successfully!"}), 200
 
-
-
-
-
-
 # USER PROFILE ROUTE
 
 @app.route('/user', methods=['GET'])
@@ -153,16 +136,6 @@ def get_user_by_ID():
     
     # If user is found, return the user's details with a 200 OK status
     return jsonify(user.to_dict()), 200
-
-
-
-
-
-
-
-
-
-
 
 
 @app.route('/products', methods=['GET'])
@@ -220,12 +193,6 @@ def create_order():
 
     return jsonify(order.to_dict()), 201
 
-
-
-
-
-
-
 @app.route('/orders/<int:order_id>', methods=['PUT'])
 def update_order(order_id):
     order = Order.query.get(order_id)
@@ -250,7 +217,6 @@ def get_orders():
     return jsonify(orders_list), 200
 
 
-
 @app.route('/orders/<int:order_id>', methods=['GET'])
 def get_order_by_id(order_id):
     order = Order.query.get(order_id)
@@ -273,11 +239,6 @@ def get_order_by_id(order_id):
         order_dict["products"].append(product_dict)
 
     return jsonify(order_dict), 200
-
-
-
-
-
 
 
 if __name__ == '__main__':

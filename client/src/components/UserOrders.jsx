@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import api from './api';
 import styled from 'styled-components';
+import UserContext from './UserContext';
 
 
 const Container = styled.div`
@@ -56,19 +57,23 @@ const UserLabel = styled.strong`
 
 function UserOrders() {
   const [orders, setOrders] = useState([]);
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     async function fetchOrders() {
         try {
-            const response = await api.getOrders();  // Using the new api
-            setOrders(response.data);   // Access the data property from the axios response
+            const response = await api.getOrders();
+            
+            // If user is logged in, filter the orders to show only those belonging to the logged-in user
+            const userOrders = user ? response.data.filter(order => order.id === user.id) : [];
+            setOrders(userOrders);
         } catch (error) {
             console.error("Error fetching orders:", error);
         }
     }
 
     fetchOrders();
-  }, []);
+  }, [user]); // Add user to the dependency array to refetch if the user changes
 
   const formatDate = (dateStr) => {
     const dateObj = new Date(dateStr);
@@ -83,7 +88,7 @@ function UserOrders() {
                 <OrderItem key={order.id}>
                     <StyledLink to={`/orders/${order.id}`}>
                       <UserInfo><UserLabel>Order ID:</UserLabel> {order.id}</UserInfo>
-                      <UserInfo><UserLabel>Product Name:</UserLabel> </UserInfo>
+                      <UserInfo><UserLabel>User ID:</UserLabel> {order.user_id}</UserInfo>
                       <UserInfo><UserLabel>Date:</UserLabel> {formatDate(order.created_at)}</UserInfo></StyledLink>
                 </OrderItem>
             ))}
