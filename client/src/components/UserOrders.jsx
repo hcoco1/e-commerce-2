@@ -64,14 +64,14 @@ function UserOrders() {
     useEffect(() => {
         async function fetchOrders() {
             try {
-                setLoading(true); // Start loading
+                setLoading(true); 
                 const response = await api.getOrders();
                 const userOrders = user ? response.data.filter(order => order.user_id === user.id) : [];
                 setOrders(userOrders);
             } catch (error) {
                 console.error("Error fetching orders:", error);
             } finally {
-                setLoading(false); // End loading
+                setLoading(false); 
             }
         }
     
@@ -88,7 +88,7 @@ function UserOrders() {
     <Container>
         <Title>Order History</Title>
         {loading ? (
-            <p>Loading orders...</p> // This can be replaced with a spinner or any other loading indicator
+            <p>Loading orders...</p> 
         ) : (
             <OrderList>
                 {orders.map(order => (

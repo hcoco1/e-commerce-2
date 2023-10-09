@@ -1,5 +1,4 @@
 // api.js
-
 import axios from './axiosConfig';
 
 const api = {

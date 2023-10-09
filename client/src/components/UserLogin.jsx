@@ -82,68 +82,68 @@ function UserLogin({ onLogin }) {
             setLoginMessage(messageFromState);
         }
     }, [messageFromState]);
-    
+
     return (
         <div>
-       
 
-        {loginMessage && 
-          (loginMessage.includes('failed') 
-            ? <StyledErrorMessageStyle>{loginMessage}</StyledErrorMessageStyle> 
-            : <StyledMessage>{loginMessage}</StyledMessage>
-          )
-        }
-        <Formik
-            initialValues={{
-                email: '',
-                password: '' 
-            }}
-            validationSchema={Yup.object({
-                email: Yup.string().email('Invalid email').required('Required'),
-                password: Yup.string().required('Required')  
-            })}
-            onSubmit={(values) => {
-                api.login(values)
-                    .then(response => {
-                        const user = response.data;
-                        if (user.message) {
-                            setLoginMessage(user.message);  // Set the user message if present
-                        } else {
-                            console.log("Logged in as:", user);
-                            onLogin(user);
-                            setLoginMessage('Login successful! Redirecting to products page...');
-                            setTimeout(() => {
-                                navigate('/products');
-                            }, 3000);
-                        }
-                    })
-                    .catch(error => {
-                        console.error("Error during login:", error.message || error);
-                        setLoginMessage('Login failed. Please try again.');
-                    });
-            }}
-        >
-<StyledForm>
-    <FormDiv>
-        <StyledLabel htmlFor="email">Email</StyledLabel>
-        <StyledInput name="email" type="email" />
-        <StyledErrorMessage name="email" component="div" />
-    </FormDiv>
 
-    <FormDiv>
-        <StyledLabel htmlFor="password">Password</StyledLabel>  
-        <StyledInput name="password" type="password" />  
-        <StyledErrorMessage name="password" component="div" />  
-    </FormDiv>
+            {loginMessage &&
+                (loginMessage.includes('failed')
+                    ? <StyledErrorMessageStyle>{loginMessage}</StyledErrorMessageStyle>
+                    : <StyledMessage>{loginMessage}</StyledMessage>
+                )
+            }
+            <Formik
+                initialValues={{
+                    email: '',
+                    password: ''
+                }}
+                validationSchema={Yup.object({
+                    email: Yup.string().email('Invalid email').required('Required'),
+                    password: Yup.string().required('Required')
+                })}
+                onSubmit={(values) => {
+                    api.login(values)
+                        .then(response => {
+                            const user = response.data;
+                            if (user.message) {
+                                setLoginMessage(user.message);  // Set the user message if present
+                            } else {
+                                console.log("Logged in as:", user);
+                                onLogin(user);
+                                setLoginMessage('Login successful! Redirecting to products page...');
+                                setTimeout(() => {
+                                    navigate('/products');
+                                }, 3000);
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error during login:", error.message || error);
+                            setLoginMessage('Login failed. Please try again.');
+                        });
+                }}
+            >
+                <StyledForm>
+                    <FormDiv>
+                        <StyledLabel htmlFor="email">Email</StyledLabel>
+                        <StyledInput name="email" type="email" />
+                        <StyledErrorMessage name="email" component="div" />
+                    </FormDiv>
 
-    <StyledButton type="submit">Login</StyledButton>
+                    <FormDiv>
+                        <StyledLabel htmlFor="password">Password</StyledLabel>
+                        <StyledInput name="password" type="password" />
+                        <StyledErrorMessage name="password" component="div" />
+                    </FormDiv>
 
-    <div style={{ marginTop: '20px', textAlign: 'center' }}>
-        Don't have an account yet? <Link to="/register">Sign Up</Link>
-    </div>
-</StyledForm>
+                    <StyledButton type="submit">Login</StyledButton>
 
-        </Formik>
+                    <div style={{ marginTop: '20px', textAlign: 'center' }}>
+                        Don't have an account yet? <Link to="/register">Sign Up</Link>
+                    </div>
+                </StyledForm>
+
+            </Formik>
         </div>
     );
 }

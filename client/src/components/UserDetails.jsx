@@ -104,7 +104,7 @@ function UserDetails() {
             })
             .catch(error => {
                 setOperationMessage('Error updating user.');
-                // You can also handle other error-related tasks if needed
+                
             });
 
     };
@@ -123,7 +123,7 @@ function UserDetails() {
             })
             .catch(error => {
                 setOperationMessage('Error deleting user.');
-                // You can also handle other error-related tasks if needed
+                
             });
 
     };

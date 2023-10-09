@@ -8,7 +8,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import api from './api';
 
 
-// Your provided styles
+
 const StyledForm = styled(Form)`
     width: 300px;
     margin: 50px auto;
@@ -89,7 +89,7 @@ const MyForm = () => {
         console.log("User registered successfully:", response.data);
         setIsRegistered(true);  // set the state to true once registration is successful
         
-        // Wait for 3 seconds (or however long you like) and then navigate to login
+        
         setTimeout(() => {
           navigate('/login');
         }, 5000);

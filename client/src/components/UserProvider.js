@@ -34,7 +34,7 @@ const UserProvider = ({ children }) => {
   useEffect(() => {
       async function fetchUserOrders() {
           try {
-              const response = await api.getOrders(); // Assuming you have an API method to get orders
+              const response = await api.getOrders(); 
               setOrders(response.data);
           } catch (error) {
               console.error("Error fetching orders:", error);
@@ -50,7 +50,7 @@ const UserProvider = ({ children }) => {
   const logout = () => {
     setUser(null); // Clear the user state
     setCart({});   // Optionally, clear the cart as well if needed
-    // You can also add any other cleanup logic here if needed
+    
   };
 
   return (

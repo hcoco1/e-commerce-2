@@ -100,7 +100,7 @@ function ProductDetail() {
             {showMessage && (
                 <div>
                     Product added!
-                    Go to <NavLink to="/cart">Cart</NavLink> 
+                    Go to <NavLink to="/cart">Cart</NavLink>
                 </div>
             )}
         </UserDetailsContainer>

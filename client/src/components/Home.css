@@ -1,6 +1,6 @@
 .landing-container {
     font-family: Arial, sans-serif;
-    background-color: #1877f2; /* Facebook's classic blue */
+    background-color: #1877f2; 
     height: 100vh; /* Full viewport height */
     display: flex;
     align-items: center;
@@ -27,7 +27,7 @@
     padding: 10px 20px;
     font-size: 1.2rem;
     background-color: white;
-    color: #1877f2; /* Facebook's classic blue */
+    color: #1877f2; 
     border: 1px solid white;
     border-radius: 5px;
     cursor: pointer;
@@ -36,7 +36,7 @@
   }
   
   .cta-button:hover {
-    background-color: #1877f2; /* Facebook's classic blue */
+    background-color: #1877f2; 
     color: white;
   }
   

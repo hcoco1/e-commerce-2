@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import api from './api'; 
+import api from './api';
 
 // Styled components for the order details
 const OrderDetailsContainer = styled.div`
@@ -40,7 +40,7 @@ const OrderDetail = () => {
     useEffect(() => {
         async function fetchOrderDetails() {
             try {
-                const response = await api.getOrderById(orderId); 
+                const response = await api.getOrderById(orderId);
                 const data = response.data;
 
                 if (data.message) {
@@ -66,7 +66,6 @@ const OrderDetail = () => {
             <OrderInfo><OrderLabel>Order ID:</OrderLabel> {order.id}</OrderInfo>
             <OrderInfo><OrderLabel>Total Price:</OrderLabel> {order.total_price}</OrderInfo>
             <OrderInfo><OrderLabel>Status:</OrderLabel> {order.status}</OrderInfo>
-            {/* Add more order details as needed */}
         </OrderDetailsContainer>
     );
 };
