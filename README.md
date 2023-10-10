@@ -315,3 +315,14 @@ This project is licensed under the terms of the MIT license. For more details, r
 
 * Add a search bar to search for products by name.
 * Send an email to the user after register and placing  orders.
+
+
+
+
+### Video:
+
+---
+
+[![Video](https://img.youtube.com/vi/jXnoFqcAkQA/maxresdefault.jpg)](https://youtu.be/BFFwhm7yo1M)
+
+---
