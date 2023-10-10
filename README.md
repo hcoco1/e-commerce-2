@@ -319,10 +319,12 @@ This project is licensed under the terms of the MIT license. For more details, r
 
 
 
-### Video:
+### Video Link:
 
 ---
 
-[![Video](https://img.youtube.com/vi/jXnoFqcAkQA/maxresdefault.jpg)](https://youtu.be/BFFwhm7yo1M)
+[![Video](https://img.youtube.com/vi/BFFwhm7yo1M/default.jpg)](https://youtu.be/BFFwhm7yo1M)
 
 ---
+
+{% include youtube.html id="BFFwhm7yo1M" %}
