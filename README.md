@@ -15,6 +15,7 @@
 
 ## Phase 5 Project: E-Commerce.
 ### Deployment link: https://phase5-app-tyia.onrender.com
+### Demo video link: https://youtu.be/9TeuJNePlGw
 ##### Phase 5 Project repository link: https://github.com/hcoco1/e-commerce-2
 
 #### Project Pitch
@@ -315,15 +316,4 @@ This project is licensed under the terms of the MIT license. For more details, r
 
 * Add a search bar to search for products by name.
 * Send an email to the user after register and placing  orders.
-
-
-
-
-### Video Link:
-
----
-
-[![Video](https://img.youtube.com/vi/BFFwhm7yo1M/default.jpg)](https://youtu.be/9TeuJNePlGw)
-
----
 
